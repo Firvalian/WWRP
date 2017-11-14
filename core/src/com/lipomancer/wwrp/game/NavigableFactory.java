@@ -13,12 +13,12 @@ public class NavigableFactory {
      *
      * @param width The width of the zone.
      * @param height The height of the zone.
-     * @return
+     * @return A flat zone.
      */
-    public Zone flatZone(int width, int height) {
-        List<List<ZoneCell>> cells = new ArrayList<List<ZoneCell>>();
+    public static Zone flatZone(int width, int height) {
+        List<List<ZoneCell>> cells = new ArrayList<>();
         for (int x = 0; x < width; x++) {
-            cells.add(new ArrayList<ZoneCell>());
+            cells.add(new ArrayList<>());
             for (int y = 0; y < height; y++) {
                 cells.get(x).add(new ZoneCellImpl());
             }

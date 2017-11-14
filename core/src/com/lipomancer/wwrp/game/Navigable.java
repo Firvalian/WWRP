@@ -23,7 +23,7 @@ public interface Navigable<T> {
      * @param x The x coordinate of the cell
      * @param y The y coordinate of the cell
      * @return The cell at the given coordinates
-     * @throws IllegalArgumentException if the coordinates are out of bounds
+     * @throws IndexOutOfBoundsException if the coordinates are out of bounds
      */
     T getCellAt(int x, int y);
 }
