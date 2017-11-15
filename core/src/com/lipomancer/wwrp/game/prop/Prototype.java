@@ -5,12 +5,12 @@ import java.util.Optional;
 /**
  * Prototypes for properties
  */
-abstract class PropertyPrototype {
+abstract class Prototype {
 
     private final PropertyType type;
     private final String name;
 
-    protected PropertyPrototype(PropertyType type, String name) {
+    protected Prototype(PropertyType type, String name) {
         this.type = type;
         this.name = name;
     }
