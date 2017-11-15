@@ -29,13 +29,12 @@ public class CharacterImpl implements Character {
      */
     @Override
     public boolean move(StepVector direction) {
-        int x = location.x + direction.x;
-        int y = location.y + direction.y;
+        IntVector2 newLocation = location.add(direction);
 
-        if (!zone.inBounds(x, y)){
+        if (!zone.inBounds(newLocation.x, newLocation.y)){
             return false;
         } else {
-            this.location = new IntVector2(x, y);
+            this.location = newLocation;
             return true;
         }
     }

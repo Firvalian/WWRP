@@ -21,6 +21,16 @@ public class IntVector2 {
         this.y = y;
     }
 
+    /**
+     * Adds this and the given vectors.
+     *
+     * @param other The other vector to add.
+     * @return The summation of the two vectors.
+     */
+    public IntVector2 add(IntVector2 other) {
+        return new IntVector2(x + other.x, y + other.y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
