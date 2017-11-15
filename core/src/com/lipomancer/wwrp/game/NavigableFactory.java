@@ -1,5 +1,7 @@
 package com.lipomancer.wwrp.game;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,21 +29,33 @@ public class NavigableFactory {
     }
 
     /**
-     * The {@link ZoneCell} implementation returned by this factory.
+     * Generates a {@link World} with a single {@link WorldCell}, containing a flat zone with specified parameters.
+     *
+     * @param width The width of the zone.
+     * @param height The height of the zone.
+     * @return A world with a single flat zone.
      */
-    private static class ZoneCellImpl implements ZoneCell {
-
+    public static World singletonFlatWorld(int width, int height) {
+        return new WorldImpl(
+                ImmutableList.of(
+                        ImmutableList.of(
+                                new WorldCellImpl(flatZone(width, height))
+                        )
+                )
+        );
     }
 
     /**
-     * The {@link Zone} implementation returned by this factory
+     * The {@link Navigable} implementation returned by this factory.
+     *
+     * @param <T> The navigable's cell type.
      */
-    private static class ZoneImpl implements Zone {
+    private static abstract class NavigableImpl<T> implements Navigable<T> {
         private final int width;
         private final int height;
-        private final List<List<ZoneCell>> cells;
+        private final List<List<T>> cells;
 
-        private ZoneImpl(List<List<ZoneCell>> cells) {
+        private NavigableImpl(List<List<T>> cells) {
             this.cells = cells;
             this.width = cells.isEmpty() ? 0 : cells.size();
             this.height = cells.isEmpty() || cells.get(0).isEmpty() ? 0 : cells.get(0).size();
@@ -58,13 +72,58 @@ public class NavigableFactory {
         }
 
         @Override
-        public List<List<ZoneCell>> getCells() {
+        public List<List<T>> getCells() {
             return this.cells;
         }
 
         @Override
-        public ZoneCell getCellAt(int x, int y) {
+        public T getCellAt(int x, int y) {
             return this.cells.get(x).get(y);
+        }
+    }
+
+    /**
+     * The {@link ZoneCell} implementation returned by this factory.
+     */
+    private static class ZoneCellImpl implements ZoneCell {
+
+    }
+
+    /**
+     * The {@link Zone} implementation returned by this factory
+     */
+    private static class ZoneImpl extends NavigableImpl<ZoneCell> implements Zone {
+        private ZoneImpl(List<List<ZoneCell>> cells) {
+            super(cells);
+        }
+    }
+
+    /**
+     * The {@link WorldCell} implementation returned by this factory.
+     */
+    private static class WorldCellImpl implements WorldCell {
+
+        private final Zone zone;
+
+        /**
+         * @param zone The {@link Zone} describing this world cell.
+         */
+        private WorldCellImpl(Zone zone) {
+            this.zone = zone;
+        }
+
+        @Override
+        public Zone getZone() {
+            return zone;
+        }
+    }
+
+    /**
+     * The {@link World} implementation returned by this factory.
+     */
+    private static class WorldImpl extends NavigableImpl<WorldCell> implements World {
+        private WorldImpl(List<List<WorldCell>> cells) {
+            super(cells);
         }
     }
 }

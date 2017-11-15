@@ -8,9 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.google.common.collect.ImmutableMap;
-import com.lipomancer.wwrp.game.CharacterImpl;
-import com.lipomancer.wwrp.game.GameState;
-import com.lipomancer.wwrp.game.NavigableFactory;
+import com.lipomancer.wwrp.game.*;
 import com.lipomancer.wwrp.gui.CharZoneGameStateView;
 import com.lipomancer.wwrp.util.IntVector2;
 import com.lipomancer.wwrp.util.StepVector;
@@ -32,7 +30,8 @@ public class WWRPGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
-		gameState = new GameState(null, new CharacterImpl(NavigableFactory.flatZone(50, 50), new IntVector2(0, 0)));
+		World world = NavigableFactory.singletonFlatWorld(50, 50);
+		gameState = new GameState(world, new CharacterImpl(new Location(world, new IntVector2(0, 0), new IntVector2(0, 0))));
 	}
 
 	@Override

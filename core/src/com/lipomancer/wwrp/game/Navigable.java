@@ -1,5 +1,7 @@
 package com.lipomancer.wwrp.game;
 
+import com.lipomancer.wwrp.util.IntVector2;
+
 import java.util.List;
 
 /**
@@ -36,6 +38,17 @@ public interface Navigable<T> {
     T getCellAt(int x, int y);
 
     /**
+     * Gets the cell at the given location.
+     *
+     * @param position The coordinates of the cell
+     * @return The cell at the given coordinates
+     * @throws IndexOutOfBoundsException if the coordinates are out of bounds
+     */
+    default T getCellAt(IntVector2 position) {
+        return getCellAt(position.x, position.y);
+    }
+
+    /**
      * Checks if the given coordinates are in bounds.
      *
      * @param x The x coordinate
@@ -47,5 +60,15 @@ public interface Navigable<T> {
                 y >= 0 &&
                 x < width() &&
                 y < height();
+    }
+
+    /**
+     * Checks if the given coordinates are in bounds.
+     *
+     * @param position the coordinates to check.
+     * @return Whether the given coordinates are out of bounds.
+     */
+    default boolean inBounds(IntVector2 position) {
+        return inBounds(position.x, position.y);
     }
 }

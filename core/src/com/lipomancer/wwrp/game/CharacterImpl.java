@@ -8,27 +8,19 @@ import com.lipomancer.wwrp.util.StepVector;
  */
 public class CharacterImpl implements Character {
 
-    private final Zone zone;
-    private IntVector2 location;
+    private final Location location;
 
     /**
      * Builds the character.
      *
-     * @param location An IntVector2 designating the character's current location.
-     * @param zone A {@link Zone} that the character is in.
+     * @param location A {@link Location} designating the character's current location.
      */
-    public CharacterImpl(Zone zone, IntVector2 location) {
-        this.zone = zone;
+    public CharacterImpl(Location location) {
         this.location = location;
     }
 
     @Override
-    public Zone getZone() {
-        return zone;
-    }
-
-    @Override
-    public IntVector2 getLocation() {
+    public Location getLocation() {
         return location;
     }
 
@@ -41,12 +33,10 @@ public class CharacterImpl implements Character {
      */
     @Override
     public boolean move(StepVector direction) {
-        IntVector2 newLocation = location.add(direction);
-
-        if (!zone.inBounds(newLocation.x, newLocation.y)){
+        if (!location.getZone().inBounds(location.getZonePosition().add(direction))){
             return false;
         } else {
-            this.location = newLocation;
+            this.location.translateInZone(direction);
             return true;
         }
     }

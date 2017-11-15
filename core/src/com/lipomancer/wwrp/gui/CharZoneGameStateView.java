@@ -25,8 +25,8 @@ public class CharZoneGameStateView implements GameStateView {
     public void draw(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        for (int i = 0; i < gameState.getPlayer().getZone().width(); i++) {
-            for (int j = 0; j < gameState.getPlayer().getZone().width(); j++) {
+        for (int i = 0; i < gameState.getPlayer().getLocation().getZone().width(); i++) {
+            for (int j = 0; j < gameState.getPlayer().getLocation().getZone().width(); j++) {
                 shapeRenderer.setColor(Color.BROWN);
                 shapeRenderer.rect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
@@ -34,8 +34,8 @@ public class CharZoneGameStateView implements GameStateView {
 
         shapeRenderer.setColor(Color.BLUE);
         shapeRenderer.circle(
-                (gameState.getPlayer().getLocation().x + 0.5f) * TILE_SIZE,
-                (gameState.getPlayer().getLocation().y + 0.5f) * TILE_SIZE,
+                (gameState.getPlayer().getLocation().getZonePosition().x + 0.5f) * TILE_SIZE,
+                (gameState.getPlayer().getLocation().getZonePosition().y + 0.5f) * TILE_SIZE,
                 TILE_SIZE * 0.5f
         );
 
