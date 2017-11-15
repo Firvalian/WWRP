@@ -1,12 +1,12 @@
 package com.lipomancer.wwrp.game;
 
-import com.badlogic.gdx.math.Vector2;
+import com.lipomancer.wwrp.util.IntVector2;
 
 /**
  * A playable or a non-playable character
  */
 public interface Character {
 
-    boolean move(Vector2 direction);
+    boolean move(IntVector2 direction);
 
 }

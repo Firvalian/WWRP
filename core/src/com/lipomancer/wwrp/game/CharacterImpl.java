@@ -1,30 +1,36 @@
 package com.lipomancer.wwrp.game;
 
-import com.badlogic.gdx.math.Vector2;
+import com.lipomancer.wwrp.util.IntVector2;
 
+/**
+ * The {@link Character} implementation.
+ */
 public class CharacterImpl implements Character {
 
-    private Zone zone;
-    private Vector2 location;
-
-    public CharacterImpl(Zone zone, Vector2 location){
+    public Zone zone;
+    public IntVector2 location;
+    /**
+     * Builds the character.
+     *
+     * @param location An IntVector2 designating the character's current location.
+     * @param zone A {@link Zone} that the character is in.
+     */
+    public CharacterImpl(Zone zone, IntVector2 location) {
         this.zone = zone;
         this.location = location;
     }
-
+    /**
+     * Checks to see if the location the Character attempts to move to is valid. If it is, moves the character and
+     * returns true. If it isn't, it returns false.
+     *
+     * @param direction An IntVector2 designating the change of coordinates in x,y.
+     * @return Whether the change of direction is valid.
+     */
     @Override
-    public boolean move(Vector2 direction) {
-        boolean success;
+    public boolean move(IntVector2 direction) {
+        int x = location.x + direction.x;
+        int y = location.y + direction.y;
 
-        float x = location.x + direction.x;
-        float y = location.y = direction.y;
-
-        if (zone.getCellAt((int) x,(int) y) == null){
-            success = false;
-        } else {
-            success = true;
-        }
-
-        return success;
+        if (!zone.inBounds(x, y)){ return false; } else { location.x = x; location.y = y; return true; }
     }
 }

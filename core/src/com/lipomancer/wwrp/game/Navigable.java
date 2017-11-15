@@ -1,7 +1,5 @@
 package com.lipomancer.wwrp.game;
 
-import com.badlogic.gdx.math.Vector2;
-
 import java.util.List;
 
 /**
