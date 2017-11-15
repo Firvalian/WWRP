@@ -56,6 +56,7 @@ public class CharacterTest {
         assertTrue(slopedWorldCharacter.move(StepVector.LEFT));
     }
 
+
     @BeforeEach
     void setUp() {
         basicWorld = singletonWorld(flatZone(5, 5));

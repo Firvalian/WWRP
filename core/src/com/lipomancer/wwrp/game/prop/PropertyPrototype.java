@@ -40,7 +40,7 @@ abstract class PropertyPrototype {
             throw new IllegalArgumentException(String.format("%s is not accepted by %s", value.toString(), getName()));
         }
 
-        return new Property(getName(), getType().valueFrom.apply(value));
+        return new Property(this, getType().valueFrom.apply(value));
     }
 
     /**

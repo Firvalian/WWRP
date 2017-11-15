@@ -5,16 +5,16 @@ package com.lipomancer.wwrp.game.prop;
  */
 public class Property {
 
-    private final String name;
+    private final PropertyPrototype proto;
     private final PropertyValue value;
 
-    public Property(String name, PropertyValue value) {
-        this.name = name;
+    protected Property(PropertyPrototype proto, PropertyValue value) {
+        this.proto = proto;
         this.value = value;
     }
 
-    public String getName() {
-        return name;
+    public PropertyPrototype getPrototype() {
+        return proto;
     }
 
     public PropertyValue getValue() {
