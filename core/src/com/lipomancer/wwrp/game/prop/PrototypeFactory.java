@@ -11,7 +11,7 @@ public class PrototypeFactory {
     /**
      * Basic prototype returned by this factory.
      */
-    private class BasicPrototype implements Prototype {
+    private static class BasicPrototype implements Prototype {
 
         private final PropertyType type;
         private final String name;
@@ -50,7 +50,7 @@ public class PrototypeFactory {
     /**
      * Wrapper for adding a default into a prototype.
      */
-    private class WithDefault implements Prototype {
+    private static class WithDefault implements Prototype {
 
         private final Prototype prototype;
         private final Object defaultValue;
@@ -89,7 +89,7 @@ public class PrototypeFactory {
     /**
      * Wrapper for adding a limited set of values for the given prototype.
      */
-    private class WithSelection implements Prototype {
+    private static class WithSelection implements Prototype {
 
         private final Prototype prototype;
         private final Set<Object> acceptedValue;
@@ -126,5 +126,20 @@ public class PrototypeFactory {
         public boolean accepts(Object value) {
             return acceptedValue.contains(value);
         }
+    }
+
+    static BasicPrototype makeBasicPrototype(PropertyType type, String name){
+
+        return new BasicPrototype(type, name);
+    }
+
+    static Prototype makeDefaultPrototype(Prototype type, String name){
+
+        return new WithDefault(type, name);
+    }
+
+    static Prototype makeSelectionPrototype(Prototype type, Set<Object> acceptedValue){
+
+        return new WithSelection(type, acceptedValue);
     }
 }
