@@ -17,6 +17,10 @@ public class Property {
         return proto;
     }
 
+    public String getProtoName(){
+        return proto.getName();
+    }
+
     public PropertyValue getValue() {
         return value;
     }
