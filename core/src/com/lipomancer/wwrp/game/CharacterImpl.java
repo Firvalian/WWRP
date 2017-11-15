@@ -1,6 +1,5 @@
 package com.lipomancer.wwrp.game;
 
-import com.lipomancer.wwrp.util.IntVector2;
 import com.lipomancer.wwrp.util.StepVector;
 
 /**
@@ -33,7 +32,7 @@ public class CharacterImpl implements Character {
      */
     @Override
     public boolean move(StepVector direction) {
-        if (!location.getZone().inBounds(location.getZonePosition().add(direction))){
+        if (!location.getZone().movable(location.getZonePosition(), direction)){
             return false;
         } else {
             this.location.translateInZone(direction);

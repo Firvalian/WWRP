@@ -20,6 +20,14 @@ public class StepVector extends IntVector2 {
         super(x, y);
     }
 
+    /**
+     * @return Gets a step vector in opposite direction.
+     */
+    public StepVector oppositeAsStep() {
+        IntVector2 asVec = opposite();
+        return new StepVector(asVec.x, asVec.y);
+    }
+
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

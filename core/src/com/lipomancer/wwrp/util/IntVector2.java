@@ -31,6 +31,23 @@ public class IntVector2 {
         return new IntVector2(x + other.x, y + other.y);
     }
 
+    /**
+     * Multiplies this vector by the given factor.
+     *
+     * @param factor The coefficient.
+     * @return The multiplied vector.
+     */
+    public IntVector2 mult(int factor) {
+        return new IntVector2(x * factor, y * factor);
+    }
+
+    /**
+     * @return A vector in opposite direction to this.
+     */
+    public IntVector2 opposite() {
+        return mult(-1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

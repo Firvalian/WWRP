@@ -1,9 +1,13 @@
 package com.lipomancer.wwrp.game;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.lipomancer.wwrp.util.IntVector2;
+import com.lipomancer.wwrp.util.StepVector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Factory class for generating navigables.
@@ -29,7 +33,25 @@ public class NavigableFactory {
     }
 
     /**
-     * Generates a zone with slope increasing towards left.
+     * Generates a zone with elevations increasing without slope towards right.
+     *
+     * @param width The width of the zone.
+     * @param height The height of the zone.
+     * @return A flat zone.
+     */
+    public static Zone stratifiedZone(int width, int height) {
+        List<List<ZoneCell>> cells = new ArrayList<>();
+        for (int x = 0; x < width; x++) {
+            cells.add(new ArrayList<>());
+            for (int y = 0; y < height; y++) {
+                cells.get(x).add(new ZoneCellImpl(x));
+            }
+        }
+        return new ZoneImpl(cells);
+    }
+
+    /**
+     * Generates a zone with elevations increasing with slope towards right.
      *
      * @param width The width of the zone.
      * @param height The height of the zone.
@@ -40,7 +62,7 @@ public class NavigableFactory {
         for (int x = 0; x < width; x++) {
             cells.add(new ArrayList<>());
             for (int y = 0; y < height; y++) {
-                cells.get(x).add(new ZoneCellImpl(x));
+                cells.get(x).add(new ZoneCellImpl(x, ImmutableSet.of(StepVector.RIGHT)));
             }
         }
         return new ZoneImpl(cells);
@@ -105,17 +127,39 @@ public class NavigableFactory {
     private static class ZoneCellImpl implements ZoneCell {
 
         private final int elevation;
+        private final Set<StepVector> slopes;
+
+        /**
+         * @param elevation Elevation of this cell.
+         * @param slopes The directions towards which this cell has a rising slope.
+         */
+        private ZoneCellImpl(int elevation, Set<StepVector> slopes) {
+            this.elevation = elevation;
+            this.slopes = slopes;
+        }
 
         /**
          * @param elevation Elevation of this cell.
          */
         private ZoneCellImpl(int elevation) {
-            this.elevation = elevation;
+            this(elevation, ImmutableSet.of());
+        }
+
+        @Override
+        public boolean movable(StepVector direction, ZoneCell adjacentCell) {
+            return elevation() == adjacentCell.elevation() ||
+                    slopes().contains(direction) ||
+                    adjacentCell.slopes().contains(direction.oppositeAsStep());
         }
 
         @Override
         public int elevation() {
             return elevation;
+        }
+
+        @Override
+        public Set<StepVector> slopes() {
+            return slopes;
         }
     }
 
@@ -125,6 +169,13 @@ public class NavigableFactory {
     private static class ZoneImpl extends NavigableImpl<ZoneCell> implements Zone {
         private ZoneImpl(List<List<ZoneCell>> cells) {
             super(cells);
+        }
+
+        @Override
+        public boolean movable(IntVector2 position, StepVector direction) {
+            IntVector2 newPosition = position.add(direction);
+
+            return inBounds(newPosition) && getCellAt(position).movable(direction, getCellAt(newPosition));
         }
     }
 
