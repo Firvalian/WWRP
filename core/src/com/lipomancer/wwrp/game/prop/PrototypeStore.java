@@ -12,7 +12,6 @@ public class PrototypeStore {
     private static final PrototypeStore INSTANCE = new PrototypeStore();
     private final Map<String, Prototype> properties;
 
-
     public PrototypeStore() {
         properties = new HashMap<>();
     }

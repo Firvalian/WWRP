@@ -7,8 +7,7 @@ import java.util.function.Function;
  */
 public enum PropertyType {
     NUMERIC(ValueFactory::makeNumeric),
-    STRING(ValueFactory::makeString),
-    SELECT(ValueFactory::makeString);
+    STRING(ValueFactory::makeString);
 
     protected final Function<Object, PropertyValue> valueFrom;
 

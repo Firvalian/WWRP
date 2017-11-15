@@ -17,7 +17,7 @@ public class Property {
         return proto;
     }
 
-    public String getProtoName(){
+    public String getName(){
         return proto.getName();
     }
 

@@ -3,57 +3,37 @@ package com.lipomancer.wwrp.game.prop;
 import java.util.Optional;
 
 /**
- * Prototypes for properties
+ * Prototype for properties.
  */
-abstract class Prototype {
-
-    private final PropertyType type;
-    private final String name;
-
-    protected Prototype(PropertyType type, String name) {
-        this.type = type;
-        this.name = name;
-    }
+interface Prototype {
 
     /**
      * @return The name of the property.
      */
-    final String getName() {
-        return name;
-    }
-
+    String getName();
     /**
      * @return The type of the property.
      */
-    final PropertyType getType() {
-        return type;
-    }
+    PropertyType getType();
 
     /**
-     * Creates a property instance of this prototype.
+     * Creates a property from this prototype.
      *
-     * @param value The value of the property
-     * @return The instantiated property.
+     * @param value The value of the property.
+     * @return The created property.
      */
-    final Property make(Object value) {
-        if (!this.accepts(value)) {
-            throw new IllegalArgumentException(String.format("%s is not accepted by %s", value.toString(), getName()));
-        }
-
-        return new Property(this, getType().valueFrom.apply(value));
-    }
+    Property make(Object value);
 
     /**
      * @return The default value of this property.
      */
-    abstract Optional<Object> defaultValue();
+    Optional<Object> defaultValue();
 
     /**
-     * Checks whether if instances of this property can have the given value. Override this for property prototypes
-     * with limited value ranges.
+     * Checks whether if the given parameter is a valid value for properties of this prototype.
      *
-     * @param value the value to check
-     * @return whether if the value is accepted.
+     * @param value The value to check
+     * @return Whether if the value is accepted.
      */
-    abstract boolean accepts(Object value);
+    boolean accepts(Object value);
 }
