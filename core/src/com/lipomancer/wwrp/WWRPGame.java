@@ -30,7 +30,7 @@ public class WWRPGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
-		World world = NavigableFactory.singletonFlatWorld(50, 50);
+		World world = NavigableFactory.singletonWorld(NavigableFactory.slopedZone(50, 50));
 		gameState = new GameState(world, new CharacterImpl(new Location(world, new IntVector2(0, 0), new IntVector2(0, 0))));
 	}
 

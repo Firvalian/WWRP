@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.lipomancer.wwrp.game.NavigableFactory.flatZone;
-import static com.lipomancer.wwrp.game.NavigableFactory.singletonFlatWorld;
+import static com.lipomancer.wwrp.game.NavigableFactory.singletonWorld;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -40,7 +40,7 @@ public class CharacterTest {
 
     @BeforeEach
     void setUp() {
-        basicWorld = singletonFlatWorld(5, 5);
+        basicWorld = singletonWorld(flatZone(5, 5));
         basicCharacter = new CharacterImpl(
                 new Location(
                         basicWorld,

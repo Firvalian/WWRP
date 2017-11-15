@@ -3,7 +3,7 @@ package com.lipomancer.wwrp.game;
 import com.lipomancer.wwrp.util.IntVector2;
 
 /**
- * A location within the game.
+ * A mutable location within the game.
  */
 public class Location {
 
@@ -37,6 +37,13 @@ public class Location {
 
     public Zone getZone() {
         return world.getCellAt(this.worldPosition).getZone();
+    }
+
+    /**
+     * @return The elevation of the {@link ZoneCell} this location is on.
+     */
+    public int getElevation() {
+        return getZone().getCellAt(zonePosition).elevation();
     }
 
     public IntVector2 getWorldPosition() {

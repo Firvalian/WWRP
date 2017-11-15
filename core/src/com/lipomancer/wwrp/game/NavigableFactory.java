@@ -22,24 +22,41 @@ public class NavigableFactory {
         for (int x = 0; x < width; x++) {
             cells.add(new ArrayList<>());
             for (int y = 0; y < height; y++) {
-                cells.get(x).add(new ZoneCellImpl());
+                cells.get(x).add(new ZoneCellImpl(0));
             }
         }
         return new ZoneImpl(cells);
     }
 
     /**
-     * Generates a {@link World} with a single {@link WorldCell}, containing a flat zone with specified parameters.
+     * Generates a zone with slope increasing towards left.
      *
      * @param width The width of the zone.
      * @param height The height of the zone.
+     * @return A flat zone.
+     */
+    public static Zone slopedZone(int width, int height) {
+        List<List<ZoneCell>> cells = new ArrayList<>();
+        for (int x = 0; x < width; x++) {
+            cells.add(new ArrayList<>());
+            for (int y = 0; y < height; y++) {
+                cells.get(x).add(new ZoneCellImpl(x));
+            }
+        }
+        return new ZoneImpl(cells);
+    }
+
+    /**
+     * Generates a {@link World} with a single {@link WorldCell}, containing a the given zone.
+     *
+     * @param zone the singleton zone.
      * @return A world with a single flat zone.
      */
-    public static World singletonFlatWorld(int width, int height) {
+    public static World singletonWorld(Zone zone) {
         return new WorldImpl(
                 ImmutableList.of(
                         ImmutableList.of(
-                                new WorldCellImpl(flatZone(width, height))
+                                new WorldCellImpl(zone)
                         )
                 )
         );
@@ -87,6 +104,19 @@ public class NavigableFactory {
      */
     private static class ZoneCellImpl implements ZoneCell {
 
+        private final int elevation;
+
+        /**
+         * @param elevation Elevation of this cell.
+         */
+        private ZoneCellImpl(int elevation) {
+            this.elevation = elevation;
+        }
+
+        @Override
+        public int elevation() {
+            return elevation;
+        }
     }
 
     /**

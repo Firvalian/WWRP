@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.lipomancer.wwrp.game.GameState;
+import com.lipomancer.wwrp.game.Zone;
 
 /**
  * {@link GameStateView} object that draws the player's view.
@@ -11,6 +12,7 @@ import com.lipomancer.wwrp.game.GameState;
 public class CharZoneGameStateView implements GameStateView {
 
     private static final int TILE_SIZE = 10;
+    private static final int COLOR_DELTA = 25;
 
     private final GameState gameState;
 
@@ -24,10 +26,17 @@ public class CharZoneGameStateView implements GameStateView {
     @Override
     public void draw(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        Zone playerZone = gameState.getPlayer().getLocation().getZone();
+        int playerEleveation = gameState.getPlayer().getLocation().getElevation();
 
-        for (int i = 0; i < gameState.getPlayer().getLocation().getZone().width(); i++) {
-            for (int j = 0; j < gameState.getPlayer().getLocation().getZone().width(); j++) {
-                shapeRenderer.setColor(Color.BROWN);
+        for (int i = 0; i < playerZone.width(); i++) {
+            for (int j = 0; j < playerZone.width(); j++) {
+                int cellElevation = playerZone.getCellAt(i, j).elevation();
+                shapeRenderer.setColor(
+                        playerEleveation > cellElevation ? Color.CHARTREUSE :
+                                playerEleveation == cellElevation ? Color.BROWN :
+                                        Color.BLACK
+                );
                 shapeRenderer.rect(i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
