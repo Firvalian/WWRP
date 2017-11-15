@@ -8,8 +8,9 @@ import com.lipomancer.wwrp.util.StepVector;
  */
 public class CharacterImpl implements Character {
 
-    private Zone zone;
+    private final Zone zone;
     private IntVector2 location;
+
     /**
      * Builds the character.
      *
@@ -20,6 +21,17 @@ public class CharacterImpl implements Character {
         this.zone = zone;
         this.location = location;
     }
+
+    @Override
+    public Zone getZone() {
+        return zone;
+    }
+
+    @Override
+    public IntVector2 getLocation() {
+        return location;
+    }
+
     /**
      * Checks to see if the location the Character attempts to move to is valid. If it is, moves the character and
      * returns true. If it isn't, it returns false.

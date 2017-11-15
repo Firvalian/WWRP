@@ -5,8 +5,8 @@ package com.lipomancer.wwrp.util;
  */
 public class StepVector extends IntVector2 {
 
-    public static final StepVector UP = new StepVector(0, -1);
-    public static final StepVector DOWN = new StepVector(0, 1);
+    public static final StepVector UP = new StepVector(0, 1);
+    public static final StepVector DOWN = new StepVector(0, -1);
     public static final StepVector LEFT = new StepVector(-1, 0);
     public static final StepVector RIGHT = new StepVector(1, 0);
 
