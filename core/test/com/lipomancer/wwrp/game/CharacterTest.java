@@ -1,6 +1,7 @@
 package com.lipomancer.wwrp.game;
 
 import com.lipomancer.wwrp.util.IntVector2;
+import com.lipomancer.wwrp.util.StepVector;
 import org.junit.jupiter.api.Test;
 
 import static com.lipomancer.wwrp.game.NavigableFactory.flatZone;
@@ -11,19 +12,13 @@ public class CharacterTest {
 
     @Test
     public void testFalseMovement(){
-        Zone zone = flatZone(5, 5);
-        IntVector2 location = new IntVector2(1,1);
-        CharacterImpl PC = new CharacterImpl(zone, location);
-        IntVector2 where = new IntVector2(-4, 42);
-        assertFalse(PC.move(where));
+        Character character = new CharacterImpl(flatZone(5, 5), new IntVector2(0, 1));
+        assertFalse(character.move(StepVector.LEFT));
     }
 
     @Test
     public void testTrueMovement(){
-        Zone zone = flatZone(5, 5);
-        IntVector2 location = new IntVector2(1,1);
-        CharacterImpl PC = new CharacterImpl(zone, location);
-        IntVector2 where = new IntVector2(2, 2);
-        assertTrue(PC.move(where));
+        Character character = new CharacterImpl(flatZone(5, 5), new IntVector2(0, 1));
+        assertTrue(character.move(StepVector.RIGHT));
     }
 }

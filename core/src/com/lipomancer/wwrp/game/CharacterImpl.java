@@ -1,14 +1,15 @@
 package com.lipomancer.wwrp.game;
 
 import com.lipomancer.wwrp.util.IntVector2;
+import com.lipomancer.wwrp.util.StepVector;
 
 /**
  * The {@link Character} implementation.
  */
 public class CharacterImpl implements Character {
 
-    public Zone zone;
-    public IntVector2 location;
+    private Zone zone;
+    private IntVector2 location;
     /**
      * Builds the character.
      *
@@ -27,10 +28,15 @@ public class CharacterImpl implements Character {
      * @return Whether the change of direction is valid.
      */
     @Override
-    public boolean move(IntVector2 direction) {
+    public boolean move(StepVector direction) {
         int x = location.x + direction.x;
         int y = location.y + direction.y;
 
-        if (!zone.inBounds(x, y)){ return false; } else { location.x = x; location.y = y; return true; }
+        if (!zone.inBounds(x, y)){
+            return false;
+        } else {
+            this.location = new IntVector2(x, y);
+            return true;
+        }
     }
 }
