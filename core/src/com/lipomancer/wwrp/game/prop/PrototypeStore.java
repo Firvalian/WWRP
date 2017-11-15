@@ -1,25 +1,44 @@
 package com.lipomancer.wwrp.game.prop;
 
 
+import com.google.common.base.Preconditions;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Singleton class about all properties available in game. This is expected to be a singleton.
+ * Class for storing all prototypes available in game. This is expected to be a singleton.
  */
 public class PrototypeStore {
 
-    private static final PrototypeStore INSTANCE = new PrototypeStore();
-    private final Map<String, Prototype> properties;
+    private final Map<String, Prototype> prototypes;
 
     public PrototypeStore() {
-        properties = new HashMap<>();
+        prototypes = new HashMap<>();
     }
 
     /**
-     * @return The singleton instance.
+     * Registers the given prototype.
+     *
+     * @param prototype The prototype to register.
+     * @throws IllegalArgumentException if a prototype with the same name is already registered.
      */
-    public static PrototypeStore getInstance() {
-        return INSTANCE;
+    public void addPrototype(Prototype prototype) {
+        Preconditions.checkArgument(
+                !prototypes.containsKey(prototype.getName()),
+                "Prototype with name %s already exists",
+                prototype.getName()
+        );
+        prototypes.put(prototype.getName(), prototype);
+    }
+
+    /**
+     * Gets the prototype with the given name.
+     *
+     * @param name The name of the prototype
+     * @return The prototype.
+     */
+    public Prototype get(String name) {
+        return prototypes.get(name);
     }
 }

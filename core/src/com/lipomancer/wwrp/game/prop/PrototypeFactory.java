@@ -9,6 +9,25 @@ import java.util.Set;
 public class PrototypeFactory {
 
     /**
+     * Creates a prototype with basic configurations.
+     *
+     * @param type The data type of the property.
+     * @param name The name of value.
+     * @return A basic prototype.
+     */
+    public static Prototype makePrototype(PropertyType type, String name) {
+        return new BasicPrototype(type, name);
+    }
+
+    public static Prototype makeDefaultPrototype(PropertyType type, String name, Object defaultValue) {
+        return new WithDefault(new BasicPrototype(type, name), defaultValue);
+    }
+
+    public static Prototype makeSelectionPrototype(PropertyType type, String name, Set<Object> acceptedValues) {
+        return new WithSelection(new BasicPrototype(type, name), acceptedValues);
+    }
+
+    /**
      * Basic prototype returned by this factory.
      */
     private static class BasicPrototype implements Prototype {
@@ -37,7 +56,7 @@ public class PrototypeFactory {
         }
 
         @Override
-        public Optional<Object> defaultValue() {
+        public Optional<PropertyValue> defaultValue() {
             return Optional.empty();
         }
 
@@ -53,11 +72,11 @@ public class PrototypeFactory {
     private static class WithDefault implements Prototype {
 
         private final Prototype prototype;
-        private final Object defaultValue;
+        private final PropertyValue defaultValue;
 
         private WithDefault(Prototype prototype, Object defaultValue) {
             this.prototype = prototype;
-            this.defaultValue = defaultValue;
+            this.defaultValue = prototype.getType().valueFrom.apply(defaultValue);
         }
 
         @Override
@@ -76,7 +95,7 @@ public class PrototypeFactory {
         }
 
         @Override
-        public Optional<Object> defaultValue() {
+        public Optional<PropertyValue> defaultValue() {
             return Optional.of(defaultValue);
         }
 
@@ -118,7 +137,7 @@ public class PrototypeFactory {
         }
 
         @Override
-        public Optional<Object> defaultValue() {
+        public Optional<PropertyValue> defaultValue() {
             return prototype.defaultValue();
         }
 
@@ -126,20 +145,5 @@ public class PrototypeFactory {
         public boolean accepts(Object value) {
             return acceptedValue.contains(value);
         }
-    }
-
-    static BasicPrototype makeBasicPrototype(PropertyType type, String name){
-
-        return new BasicPrototype(type, name);
-    }
-
-    static Prototype makeDefaultPrototype(Prototype type, String name){
-
-        return new WithDefault(type, name);
-    }
-
-    static Prototype makeSelectionPrototype(Prototype type, Set<Object> acceptedValue){
-
-        return new WithSelection(type, acceptedValue);
     }
 }

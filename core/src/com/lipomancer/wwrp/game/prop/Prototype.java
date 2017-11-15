@@ -27,7 +27,7 @@ interface Prototype {
     /**
      * @return The default value of this property.
      */
-    Optional<Object> defaultValue();
+    Optional<PropertyValue> defaultValue();
 
     /**
      * Checks whether if the given parameter is a valid value for properties of this prototype.
