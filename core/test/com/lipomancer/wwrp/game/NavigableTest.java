@@ -15,7 +15,12 @@ class NavigableTest {
     }
 
     @Test
-    public void dummyTest() {
-        assertNotEquals(false, true);
+    public void testInBounds() {
+        assertTrue(NavigableFactory.flatZone(1, 1).inBounds(0, 0));
+    }
+
+    @Test
+    public void testNotInBounds() {
+        assertFalse(NavigableFactory.flatZone(3, 2).inBounds(2, 2));
     }
 }

@@ -37,10 +37,24 @@ public class NavigableFactory {
      * The {@link Zone} implementation returned by this factory
      */
     private static class ZoneImpl implements Zone {
-        private List<List<ZoneCell>> cells;
+        private final int width;
+        private final int height;
+        private final List<List<ZoneCell>> cells;
 
         private ZoneImpl(List<List<ZoneCell>> cells) {
             this.cells = cells;
+            this.width = cells.isEmpty() ? 0 : cells.size();
+            this.height = cells.isEmpty() || cells.get(0).isEmpty() ? 0 : cells.get(0).size();
+        }
+
+        @Override
+        public int width() {
+            return width;
+        }
+
+        @Override
+        public int height() {
+            return height;
         }
 
         @Override

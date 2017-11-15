@@ -5,9 +5,19 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.List;
 
 /**
- * A navigable area, containing cells of type T.
+ * A grid navigable area, containing cells of type T.
  */
 public interface Navigable<T> {
+
+    /**
+     * @return The width of this navigable.
+     */
+    int width();
+
+    /**
+     * @return The height of this navigable.
+     */
+    int height();
 
     /**
      * Gets the cells of this navigable as a square list. The returned list is in column-first fashion.
@@ -26,4 +36,18 @@ public interface Navigable<T> {
      * @throws IndexOutOfBoundsException if the coordinates are out of bounds
      */
     T getCellAt(int x, int y);
+
+    /**
+     * Checks if the given coordinates are in bounds.
+     *
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @return Whether the given coordinates are out of bounds.
+     */
+    default boolean inBounds(int x, int y) {
+        return x >= 0 &&
+                y >= 0 &&
+                x < width() &&
+                y < height();
+    }
 }
