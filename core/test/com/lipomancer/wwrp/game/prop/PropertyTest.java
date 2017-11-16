@@ -1,5 +1,6 @@
 package com.lipomancer.wwrp.game.prop;
 
+import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,7 @@ class PropertyTest {
 
     private Prototype stringProto;
     private Prototype numericProto;
+    private Prototype selectProto;
 
     @Test
     public void testPropertyCreation() {
@@ -35,9 +37,23 @@ class PropertyTest {
         );
     }
 
+    @Test
+    public void testSelectMismatch() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> selectProto.make("c")
+        );
+    }
+
+    @Test
+    public void testSelectConstructionSuccess() {
+        selectProto.make("a");
+    }
+
     @BeforeEach
     void setUp() {
         stringProto = PrototypeFactory.makePrototype(PropertyType.STRING, "str");
         numericProto = PrototypeFactory.makePrototype(PropertyType.NUMERIC, "num");
+        selectProto = PrototypeFactory.makeSelectionPrototype(PropertyType.STRING, "select", ImmutableSet.of("a", "b"));
     }
 }
