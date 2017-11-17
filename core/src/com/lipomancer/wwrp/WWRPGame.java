@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.google.common.collect.ImmutableMap;
 import com.lipomancer.wwrp.game.*;
-import com.lipomancer.wwrp.game.prop.PrototypeStore;
-import com.lipomancer.wwrp.gui.CharZoneGameStateView;
 import com.lipomancer.wwrp.testdata.TestData;
-import com.lipomancer.wwrp.util.IntVector2;
 import com.lipomancer.wwrp.util.StepVector;
 
 import java.util.Map;
@@ -25,7 +22,7 @@ public class WWRPGame extends ApplicationAdapter {
     );
 
 	private ShapeRenderer shapeRenderer;
-	private GameState gameState;
+	private GameState2 gameState;
 
 	@Override
 	public void create () {
@@ -37,14 +34,6 @@ public class WWRPGame extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		for (Map.Entry<Integer, StepVector> entry : KEY_DIRECTIONS.entrySet()) {
-		    if (Gdx.input.isKeyPressed(entry.getKey())) {
-		        gameState.getPlayer().move(entry.getValue());
-            }
-        }
-
-        new CharZoneGameStateView(gameState).draw(shapeRenderer);
 	}
 	
 	@Override

@@ -8,6 +8,11 @@ import java.util.List;
 public interface PropertyValue {
 
     /**
+     * @return Gets the property value as an {@link Object}.
+     */
+    Object asObj();
+
+    /**
      * @return Gets the property as numeric.
      * @throws IllegalStateException if the value is not a numeric.
      */

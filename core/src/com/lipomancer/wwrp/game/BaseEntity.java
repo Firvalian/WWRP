@@ -3,33 +3,49 @@ package com.lipomancer.wwrp.game;
 import com.lipomancer.wwrp.game.prop.Property;
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Base implementation of the game's entities.
+ * Abstract entity implementation for carrying properties.
  */
-public class BaseEntity implements Entity {
+abstract class BaseEntity implements Entity {
 
-    private final List<Entity> containedEntities;
-    private final Map<String, Property> properties;
+    protected Entity parent;
+    protected final Map<String, Property> properties;
 
-    public BaseEntity() {
-        this(new ArrayList<>(), new HashMap<>());
+    public BaseEntity(Map<String, Object> properties) {
+        this(properties, NoEntity.INSTANCE);
     }
 
-    public BaseEntity(List<Entity> containedEntities, Map<String, Property> properties) {
-        this.containedEntities = containedEntities;
-        this.properties = properties;
+    public BaseEntity(Map<String, Object> properties, Entity parent) {
+        this.parent = parent;
+        this.properties = new HashMap<>();
+        properties.forEach(this::setProperty);
     }
 
     @Override
-    public List<Entity> containedEntities() {
-        return containedEntities;
+    public Entity parent() {
+        return parent;
+    }
+
+    @Override
+    public Entity setParent(Entity newParent) {
+        Entity oldParent = parent;
+        parent = newParent;
+        return oldParent;
+    }
+
+    @Override
+    public boolean isNoEntity() {
+        return false;
     }
 
     @Override
     public Map<String, Property> properties() {
-        return Collections.unmodifiableMap(properties);
+        return properties;
     }
 
     @Override
@@ -41,4 +57,5 @@ public class BaseEntity implements Entity {
     public PrototypeStore prototypeStore() {
         return PrototypeStore.getInstance();
     }
+
 }

@@ -11,7 +11,7 @@ class ValueFactory {
     static PropertyValue makeNumeric(Object value) {
         return make(
                 value,
-                Double.class,
+                Number.class,
                 NumericValue::new
         );
     }
@@ -25,15 +25,15 @@ class ValueFactory {
     }
 
     static PropertyValue makeStringList(Object value) {
-        return make(
+        return makeList(
                 value,
-                List.class,
+                String.class,
                 StringListValue::new
         );
     }
 
     private static <T> PropertyValue make(Object value, Class<T> valueClass, Function<T, PropertyValue> construction) {
-        if (!(value instanceof List)) {
+        if (!(valueClass.isInstance(value))) {
             throw new IllegalArgumentException(String.format("Values of type %s expected", valueClass.getName()));
         }
 
@@ -42,7 +42,7 @@ class ValueFactory {
 
     @SuppressWarnings("unchecked")
     private static <T> PropertyValue makeList(Object value, Class<T> valueClass, Function<List<T>, PropertyValue> construction) {
-        if (!value.getClass().equals(List.class)) {
+        if (!(value instanceof  List)) {
             throw new IllegalArgumentException("List expected.");
         }
 
@@ -58,7 +58,18 @@ class ValueFactory {
     /**
      * Base class of produced values.
      */
-    private static abstract class BaseValue implements PropertyValue {
+    private static abstract class BaseValue<T> implements PropertyValue {
+
+        protected T value;
+
+        BaseValue(T value) {
+            this.value = value;
+        }
+
+        @Override
+        public Object asObj() {
+            return value;
+        }
 
         @Override
         public double asNumeric() {
@@ -91,29 +102,25 @@ class ValueFactory {
     /**
      * Numeric values
      */
-    private static class NumericValue extends BaseValue {
+    private static class NumericValue extends BaseValue<Number> {
 
-        private double value;
-
-        NumericValue(double value) {
-            this.value = value;
+        NumericValue(Number value) {
+            super(value);
         }
 
         @Override
         public double asNumeric() {
-            return value;
+            return value.doubleValue();
         }
     }
 
     /**
      * String values
      */
-    private static class StringValue extends BaseValue {
-
-        private String value;
+    private static class StringValue extends BaseValue<String> {
 
         StringValue(String value) {
-            this.value = value;
+            super(value);
         }
 
         @Override
@@ -125,12 +132,10 @@ class ValueFactory {
     /**
      * String values
      */
-    private static class StringListValue extends BaseValue {
-
-        private List<String> value;
+    private static class StringListValue extends BaseValue<List<String>> {
 
         StringListValue(List<String> value) {
-            this.value = value;
+            super(value);
         }
 
         @Override

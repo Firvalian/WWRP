@@ -1,14 +1,12 @@
 package com.lipomancer.wwrp.game;
 
-import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
-import javax.swing.text.html.parser.Entity;
 
 /**
  * Complete state of the game.
  */
-public class GameState extends BaseEntity {
+public class GameState extends ListEntity {
 
     private final World world;
     private final Character player;

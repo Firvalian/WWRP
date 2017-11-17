@@ -24,4 +24,6 @@ public class Property {
     public PropertyValue getValue() {
         return value;
     }
+
+    public String stringValue() { return getValue().asString(); }
 }
