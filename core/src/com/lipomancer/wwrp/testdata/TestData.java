@@ -20,22 +20,19 @@ import static com.lipomancer.wwrp.game.prop.PrototypeFactory.makeSelectionProtot
  */
 public class TestData {
 
-    private static final Supplier<GameState> INSTANCE = Suppliers.memoize(TestData::prepareGameState);
-
-    public static GameState getSampleData() { return INSTANCE.get(); }
-
-    private static GameState prepareGameState() {
-        preparePrototypeStore();
-        Entity player = preparePlayer();
+    public static GameState prepareGameState() {
+        EntityFactory entityFactory = new EntityFactory(preparePrototypeStore());
+        Entity player = preparePlayer(entityFactory);
         return new GameState(
-                prepareWorld(player),
+                entityFactory,
+                prepareWorld(entityFactory, player),
                 player
         );
     }
 
-    private static Entity prepareWorld(Entity player) {
+    private static Entity prepareWorld(EntityFactory ef, Entity player) {
         List<String> locIndices = ImmutableList.of("loc.x", "loc.y");
-        return new IndexedEntity(
+        return ef.indexEntity(
                 ImmutableMap.of(
                         "type", "world",
                         "loc.width", 1,
@@ -43,7 +40,7 @@ public class TestData {
                 ),
                 locIndices,
                 ImmutableList.of(
-                    new IndexedEntity(
+                    ef.indexEntity(
                             ImmutableMap.of(
                                     "type", "zone",
                                     "loc.x", 0,
@@ -53,7 +50,7 @@ public class TestData {
                             ),
                             locIndices,
                             ImmutableList.of(
-                                    new ListEntity(
+                                    ef.listEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 0,
@@ -61,21 +58,21 @@ public class TestData {
                                             ),
                                             ImmutableList.of(player)
                                     ),
-                                    new ListEntity(
+                                    ef.listEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 0,
                                                     "loc.y", 1
                                             )
                                     ),
-                                    new ListEntity(
+                                    ef.listEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 1,
                                                     "loc.y", 0
                                             )
                                     ),
-                                    new ListEntity(
+                                    ef.listEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 1,
@@ -88,8 +85,8 @@ public class TestData {
         );
     }
 
-    private static Entity preparePlayer() {
-        return new ListEntity(
+    private static Entity preparePlayer(EntityFactory ef) {
+        return ef.listEntity(
                 ImmutableMap.of(
                         "player", true
                 )
@@ -97,7 +94,7 @@ public class TestData {
     }
 
     private static PrototypeStore preparePrototypeStore() {
-        return PrototypeStore.getInstance()
+        return new PrototypeStore()
                 .addPrototype(
                         makeSelectionPrototype(
                                 STRING,

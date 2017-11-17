@@ -13,6 +13,11 @@ import java.util.Map;
 public interface Entity {
 
     /**
+     * @return the ID of this entity. ID of 0 is reserved for no-entities.
+     */
+    int id();
+
+    /**
      * @return The entity that contains this entity.
      */
     Entity parent();

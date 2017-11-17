@@ -1,6 +1,6 @@
 package com.lipomancer.wwrp.game;
 
-import com.lipomancer.wwrp.game.prop.Property;
+import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
 import java.util.*;
 
@@ -11,16 +11,8 @@ public class ListEntity extends BaseEntity {
 
     private final List<Entity> containedEntities;
 
-    public ListEntity() {
-        this(new HashMap<>());
-    }
-
-    public ListEntity(Map<String, Object> properties) {
-        this(properties, new ArrayList<>());
-    }
-
-    public ListEntity(Map<String, Object> properties, List<Entity> containedEntities) {
-        super(properties);
+    public ListEntity(int id, PrototypeStore prototypeStore, Map<String, Object> properties, List<Entity> containedEntities) {
+        super(id, prototypeStore, properties);
         this.containedEntities = new ArrayList<>();
         containedEntities.forEach(this::addEntity);
     }

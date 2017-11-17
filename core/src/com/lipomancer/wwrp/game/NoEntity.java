@@ -17,6 +17,11 @@ public final class NoEntity implements Entity {
     private NoEntity() { }
 
     @Override
+    public int id() {
+        return 0;
+    }
+
+    @Override
     public Entity parent() {
         return this;
     }
@@ -53,7 +58,7 @@ public final class NoEntity implements Entity {
 
     @Override
     public PrototypeStore prototypeStore() {
-        return PrototypeStore.getInstance();
+        throw new UnsupportedOperationException();
     }
 
     @Override

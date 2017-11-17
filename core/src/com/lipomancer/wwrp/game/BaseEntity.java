@@ -3,9 +3,8 @@ package com.lipomancer.wwrp.game;
 import com.lipomancer.wwrp.game.prop.Property;
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -13,17 +12,26 @@ import java.util.Map;
  */
 abstract class BaseEntity implements Entity {
 
+    private final int id;
+    protected final PrototypeStore prototypeStore;
     protected Entity parent;
     protected final Map<String, Property> properties;
 
-    public BaseEntity(Map<String, Object> properties) {
-        this(properties, NoEntity.INSTANCE);
+    public BaseEntity(int id, PrototypeStore prototypeStore, Map<String, Object> properties) {
+        this(id, prototypeStore, properties, NoEntity.INSTANCE);
     }
 
-    public BaseEntity(Map<String, Object> properties, Entity parent) {
+    public BaseEntity(int id, PrototypeStore prototypeStore, Map<String, Object> properties, Entity parent) {
+        this.prototypeStore = prototypeStore;
+        this.id = id;
         this.parent = parent;
         this.properties = new HashMap<>();
         properties.forEach(this::setProperty);
+    }
+
+    @Override
+    public int id() {
+        return id;
     }
 
     @Override
@@ -55,11 +63,17 @@ abstract class BaseEntity implements Entity {
 
     @Override
     public PrototypeStore prototypeStore() {
-        return PrototypeStore.getInstance();
+        return prototypeStore;
     }
 
     @Override
     public String toString() {
-        return String.format("{%s, %s}", properties().toString(), containedEntities().toString());
+        return String.format(
+                Locale.getDefault(),
+                "E#%d{properties=%s, contained=%s}",
+                id(),
+                properties().values().toString(),
+                containedEntities().toString()
+        );
     }
 }

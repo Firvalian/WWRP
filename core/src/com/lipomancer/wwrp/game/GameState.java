@@ -5,10 +5,12 @@ package com.lipomancer.wwrp.game;
  */
 public class GameState {
 
+    private final EntityFactory entityFactory;
     private final Entity world;
     private final Entity player;
 
-    public GameState(Entity world, Entity player) {
+    public GameState(EntityFactory entityFactory, Entity world, Entity player) {
+        this.entityFactory = entityFactory;
         this.world = world;
         this.player = player;
     }
@@ -19,5 +21,9 @@ public class GameState {
 
     public Entity getPlayer() {
         return player;
+    }
+
+    public EntityFactory getEntityFactory() {
+        return entityFactory;
     }
 }

@@ -5,15 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.lipomancer.wwrp.game.*;
-import com.lipomancer.wwrp.game.prop.Property;
-import com.lipomancer.wwrp.game.prop.PrototypeStore;
 import com.lipomancer.wwrp.testdata.TestData;
-import com.lipomancer.wwrp.util.StepVector;
 
-import java.util.List;
 import java.util.Map;
 
 public class WWRPGame extends ApplicationAdapter {
@@ -25,12 +20,12 @@ public class WWRPGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
-		gameState = TestData.getSampleData();
+		gameState = TestData.prepareGameState();
 		moveParams = ImmutableMap.of(
-                Input.Keys.UP, new ListEntity(ImmutableMap.of("dx", 0, "dy", 1)),
-                Input.Keys.DOWN, new ListEntity(ImmutableMap.of("dx", 0, "dy", -1)),
-                Input.Keys.LEFT, new ListEntity(ImmutableMap.of("dx", -1, "dy", 0)),
-                Input.Keys.RIGHT, new ListEntity(ImmutableMap.of("dx", 1, "dy", 0))
+                Input.Keys.UP, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", 0, "dy", 1)),
+                Input.Keys.DOWN, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", 0, "dy", -1)),
+                Input.Keys.LEFT, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", -1, "dy", 0)),
+                Input.Keys.RIGHT, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", 1, "dy", 0))
         );
 	}
 

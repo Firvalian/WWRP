@@ -11,15 +11,6 @@ import java.util.Map;
  */
 public class PrototypeStore {
 
-    private static final PrototypeStore INSTANCE = new PrototypeStore();
-
-    /**
-     * @return a singleton instance for the prototype store.
-     */
-    public static PrototypeStore getInstance() {
-        return INSTANCE;
-    }
-
     private final Map<String, Prototype> prototypes;
 
     public PrototypeStore() {
