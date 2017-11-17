@@ -22,7 +22,7 @@ public class WWRPGame extends ApplicationAdapter {
     );
 
 	private ShapeRenderer shapeRenderer;
-	private GameState2 gameState;
+	private GameState gameState;
 
 	@Override
 	public void create () {

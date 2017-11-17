@@ -1,7 +1,6 @@
 package com.lipomancer.wwrp.game;
 
 import com.lipomancer.wwrp.game.prop.Property;
-import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,7 @@ public class IndexedEntity extends BaseEntity {
     private final List<String> indexKeys;
     private final Map<List<Object>, Entity> containedEntities;
 
-    public IndexedEntity(List<String> indexKeys, List<Entity> entities, Map<String, Object> properties) {
+    public IndexedEntity(Map<String, Object> properties, List<String> indexKeys, List<Entity> entities) {
         super(properties);
         this.indexKeys = indexKeys;
         this.containedEntities = new HashMap<>();

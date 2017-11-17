@@ -1,7 +1,6 @@
 package com.lipomancer.wwrp.game;
 
 import com.lipomancer.wwrp.game.prop.Property;
-import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
 import java.util.*;
 
@@ -17,10 +16,10 @@ public class ListEntity extends BaseEntity {
     }
 
     public ListEntity(Map<String, Object> properties) {
-        this(new ArrayList<>(), properties);
+        this(properties, new ArrayList<>());
     }
 
-    public ListEntity(List<Entity> containedEntities, Map<String, Object> properties) {
+    public ListEntity(Map<String, Object> properties, List<Entity> containedEntities) {
         super(properties);
         this.containedEntities = new ArrayList<>();
         containedEntities.forEach(this::addEntity);

@@ -5,10 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.lipomancer.wwrp.game.*;
-import com.lipomancer.wwrp.game.Character;
-import com.lipomancer.wwrp.game.prop.PrototypeFactory;
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
-import com.lipomancer.wwrp.util.IntVector2;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -25,13 +22,13 @@ import static com.lipomancer.wwrp.game.prop.PrototypeFactory.makeSelectionProtot
 public class TestData {
 
 
-    private static final Supplier<GameState2> INSTANCE = Suppliers.memoize(TestData::prepareGameState);
+    private static final Supplier<GameState> INSTANCE = Suppliers.memoize(TestData::prepareGameState);
 
-    public static GameState2 getSampleData() { return INSTANCE.get(); }
+    public static GameState getSampleData() { return INSTANCE.get(); }
 
-    private static GameState2 prepareGameState() {
+    private static GameState prepareGameState() {
         preparePrototypeStore();
-        return new GameState2(
+        return new GameState(
                 prepareWorld()
         );
     }
@@ -39,21 +36,48 @@ public class TestData {
     private static Entity prepareWorld() {
         List<String> locIndices = ImmutableList.of("loc.x", "loc.y");
         return new IndexedEntity(
+                ImmutableMap.of("type", "world"),
                 locIndices,
                 ImmutableList.of(
                     new IndexedEntity(
-                            locIndices,
-                            ImmutableList.of(
-
-                            ),
                             ImmutableMap.of(
                                     "type", "zone",
                                     "loc.x", 0,
                                     "loc.y", 0
+                            ),
+                            locIndices,
+                            ImmutableList.of(
+                                    new ListEntity(
+                                            ImmutableMap.of(
+                                                    "type", "zonecell",
+                                                    "loc.x", 0,
+                                                    "loc.y", 0
+                                            )
+                                    ),
+                                    new ListEntity(
+                                            ImmutableMap.of(
+                                                    "type", "zonecell",
+                                                    "loc.x", 0,
+                                                    "loc.y", 1
+                                            )
+                                    ),
+                                    new ListEntity(
+                                            ImmutableMap.of(
+                                                    "type", "zonecell",
+                                                    "loc.x", 1,
+                                                    "loc.y", 0
+                                            )
+                                    ),
+                                    new ListEntity(
+                                            ImmutableMap.of(
+                                                    "type", "zonecell",
+                                                    "loc.x", 1,
+                                                    "loc.y", 1
+                                            )
+                                    )
                             )
                     )
-                ),
-                ImmutableMap.of("type", "world")
+                )
         );
     }
 
@@ -66,7 +90,7 @@ public class TestData {
                                 ImmutableSet.of(
                                         "world",
                                         "zone",
-                                        "zonescell",
+                                        "zonecell",
                                         "item",
                                         "itemproto",
                                         "character"
