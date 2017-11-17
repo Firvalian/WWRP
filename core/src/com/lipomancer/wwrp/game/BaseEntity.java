@@ -58,4 +58,8 @@ abstract class BaseEntity implements Entity {
         return PrototypeStore.getInstance();
     }
 
+    @Override
+    public String toString() {
+        return String.format("{%s, %s}", properties().toString(), containedEntities().toString());
+    }
 }

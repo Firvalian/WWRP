@@ -37,7 +37,7 @@ public class ListEntity extends BaseEntity {
     }
 
     @Override
-    public Entity getContained(List<Property> properties) {
+    public Entity getContained(Map<String, Object> properties) {
         throw new UnsupportedOperationException();
     }
 }

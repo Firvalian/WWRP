@@ -42,12 +42,7 @@ public class IndexedEntity extends BaseEntity {
     }
 
     @Override
-    public Entity getContained(List<Property> properties) {
-        List<String> keys = properties.stream().map(Property::getName).collect(Collectors.toList());
-        if (!keys.equals(indexKeys)) {
-            throw new UnsupportedOperationException("Given keys must be exactly the same and in the order of index keys.");
-        }
-
-        return containedEntities.get(properties.stream().map(p -> p.getValue().asObj()).collect(Collectors.toList()));
+    public Entity getContained(Map<String, Object> properties) {
+        return containedEntities.get(indexKeys.stream().map(properties::get).collect(Collectors.toList()));
     }
 }

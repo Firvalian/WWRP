@@ -8,7 +8,9 @@ import java.util.function.Function;
 public enum PropertyType {
     NUMERIC(ValueFactory::makeNumeric),
     STRING(ValueFactory::makeString),
-    STRING_LIST(ValueFactory::makeStringList);
+    BOOLEAN(ValueFactory::makeBoolean),
+    STRING_LIST(ValueFactory::makeStringList),
+    NUMERIC_LIST(ValueFactory::makeNumericList);
 
     protected final Function<Object, PropertyValue> valueFrom;
 

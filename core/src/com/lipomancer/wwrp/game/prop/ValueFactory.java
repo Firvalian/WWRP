@@ -24,11 +24,27 @@ class ValueFactory {
         );
     }
 
+    static PropertyValue makeBoolean(Object value) {
+        return make(
+                value,
+                Boolean.class,
+                BooleanValue::new
+        );
+    }
+
     static PropertyValue makeStringList(Object value) {
         return makeList(
                 value,
                 String.class,
                 StringListValue::new
+        );
+    }
+
+    static PropertyValue makeNumericList(Object value) {
+        return makeList(
+                value,
+                Number.class,
+                NumericListValue::new
         );
     }
 
@@ -84,9 +100,26 @@ class ValueFactory {
         }
 
         @Override
+        public boolean asBoolean() {
+            throwIllegalState();
+            return false;
+        }
+
+        @Override
         public List<String> asStringList() {
             throwIllegalState();
             return null;
+        }
+
+        @Override
+        public List<Number> asNumericList() {
+            throwIllegalState();
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(value);
         }
 
         /**
@@ -132,6 +165,21 @@ class ValueFactory {
     /**
      * String values
      */
+    private static class BooleanValue extends BaseValue<Boolean> {
+
+        BooleanValue(Boolean value) {
+            super(value);
+        }
+
+        @Override
+        public boolean asBoolean() {
+            return value;
+        }
+    }
+
+    /**
+     * String values
+     */
     private static class StringListValue extends BaseValue<List<String>> {
 
         StringListValue(List<String> value) {
@@ -140,6 +188,21 @@ class ValueFactory {
 
         @Override
         public List<String> asStringList() {
+            return value;
+        }
+    }
+
+    /**
+     * String values
+     */
+    private static class NumericListValue extends BaseValue<List<Number>> {
+
+        NumericListValue(List<Number> value) {
+            super(value);
+        }
+
+        @Override
+        public List<Number> asNumericList() {
             return value;
         }
     }

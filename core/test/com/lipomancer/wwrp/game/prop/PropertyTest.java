@@ -11,6 +11,7 @@ class PropertyTest {
 
     private Prototype stringProto;
     private Prototype numericProto;
+    private Prototype booleanProto;
     private Prototype selectProto;
     private Prototype stringListProto;
 
@@ -60,10 +61,18 @@ class PropertyTest {
         );
     }
 
+    @Test
+    public void testBoolProperty() {
+        assertFalse(
+                booleanProto.make(false).getValue().asBoolean()
+        );
+    }
+
     @BeforeEach
     void setUp() {
         stringProto = PrototypeFactory.makePrototype(PropertyType.STRING, "str");
         numericProto = PrototypeFactory.makePrototype(PropertyType.NUMERIC, "num");
+        booleanProto = PrototypeFactory.makePrototype(PropertyType.BOOLEAN, "bool");
         selectProto = PrototypeFactory.makeSelectionPrototype(PropertyType.STRING, "select", ImmutableSet.of("a", "b"));
         stringListProto = PrototypeFactory.makePrototype(PropertyType.STRING_LIST, "stringlist");
     }

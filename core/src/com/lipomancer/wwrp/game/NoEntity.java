@@ -3,7 +3,6 @@ package com.lipomancer.wwrp.game;
 import com.lipomancer.wwrp.game.prop.Property;
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +57,12 @@ public final class NoEntity implements Entity {
     }
 
     @Override
-    public Entity getContained(List<Property> properties) {
+    public Entity getContained(Map<String, Object> properties) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toString() {
+        return "#NoEntity#";
     }
 }

@@ -5,35 +5,60 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.lipomancer.wwrp.game.*;
+import com.lipomancer.wwrp.game.prop.Property;
+import com.lipomancer.wwrp.game.prop.PrototypeStore;
 import com.lipomancer.wwrp.testdata.TestData;
 import com.lipomancer.wwrp.util.StepVector;
 
+import java.util.List;
 import java.util.Map;
 
 public class WWRPGame extends ApplicationAdapter {
 
-    private static final Map<Integer, StepVector> KEY_DIRECTIONS = ImmutableMap.of(
-            Input.Keys.UP, StepVector.UP,
-            Input.Keys.DOWN, StepVector.DOWN,
-            Input.Keys.LEFT, StepVector.LEFT,
-            Input.Keys.RIGHT, StepVector.RIGHT
-    );
-
 	private ShapeRenderer shapeRenderer;
 	private GameState gameState;
+	private Map<Integer, Entity> moveParams;
 
 	@Override
 	public void create () {
 		shapeRenderer = new ShapeRenderer();
 		gameState = TestData.getSampleData();
+		moveParams = ImmutableMap.of(
+                Input.Keys.UP, new ListEntity(ImmutableMap.of("dx", 0, "dy", 1)),
+                Input.Keys.DOWN, new ListEntity(ImmutableMap.of("dx", 0, "dy", -1)),
+                Input.Keys.LEFT, new ListEntity(ImmutableMap.of("dx", -1, "dy", 0)),
+                Input.Keys.RIGHT, new ListEntity(ImmutableMap.of("dx", 1, "dy", 0))
+        );
 	}
 
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        for (Map.Entry<Integer, Entity> entry : moveParams.entrySet()) {
+            if (Gdx.input.isKeyPressed(entry.getKey())) {
+                ((Action) (target, params) -> {
+                    Entity zoneCell = target.parent();
+                    int newX = (int) (params.properties().get("dx").getValue().asNumeric() + zoneCell.properties().get("loc.x").getValue().asNumeric());
+                    int newY = (int) (params.properties().get("dy").getValue().asNumeric() + zoneCell.properties().get("loc.y").getValue().asNumeric());
+                    Entity zone = zoneCell.parent();
+
+                    if (newX >= 0 &&
+                            newY >= 0 &&
+                            newX < zone.properties().get("loc.width").getValue().asNumeric() &&
+                            newY < zone.properties().get("loc.height").getValue().asNumeric()) {
+                        zoneCell.containedEntities().remove(target);
+                        zone.getContained(ImmutableMap.of("loc.x", newX, "loc.y", newY)).addEntity(target);
+                    }
+
+                    System.out.println("Player cell: " + gameState.getPlayer().parent().toString());
+                }).apply(gameState.getPlayer(), entry.getValue());
+            }
+        }
 	}
 	
 	@Override

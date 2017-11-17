@@ -6,12 +6,18 @@ package com.lipomancer.wwrp.game;
 public class GameState {
 
     private final Entity world;
+    private final Entity player;
 
-    public GameState(Entity world) {
+    public GameState(Entity world, Entity player) {
         this.world = world;
+        this.player = player;
     }
 
     public Entity getWorld() {
         return world;
+    }
+
+    public Entity getPlayer() {
+        return player;
     }
 }

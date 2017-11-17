@@ -26,4 +26,9 @@ public class Property {
     }
 
     public String stringValue() { return getValue().asString(); }
+
+    @Override
+    public String toString() {
+        return String.format("(%s, %s)", getName(), getValue());
+    }
 }

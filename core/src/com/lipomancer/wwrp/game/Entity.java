@@ -75,7 +75,5 @@ public interface Entity {
      * @return the entity with the given property equal to the given value.
      * @throws UnsupportedOperationException if the operation is not implemented.
      */
-    Entity getContained(List<Property> properties);
-
-
+    Entity getContained(Map<String, Object> properties);
 }
