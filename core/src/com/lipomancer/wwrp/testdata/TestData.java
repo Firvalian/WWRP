@@ -11,6 +11,9 @@ import com.lipomancer.wwrp.util.IntVector2;
 
 import java.util.function.Supplier;
 
+import static com.lipomancer.wwrp.game.prop.PropertyType.NUMERIC;
+import static com.lipomancer.wwrp.game.prop.PropertyType.STRING;
+
 /**
  * Test data examples for mocking the game.
  */
@@ -48,24 +51,17 @@ public class TestData {
     }
 
     private static PrototypeStore preparePrototypeStore() {
-        PrototypeStore prototypeStore = new PrototypeStore();
-        prototypeStore.addPrototype(
-                PrototypeFactory.makePrototype(PropertyType.STRING, "property1")
-        );
-        prototypeStore.addPrototype(
-                PrototypeFactory.makeSelectionPrototype(
-                        PropertyType.STRING,
-                        "selection1",
-                        ImmutableSet.of("item1", "item2")
-                )
-        );
-        prototypeStore.addPrototype(
-                PrototypeFactory.makeDefaultPrototype(
-                        PropertyType.NUMERIC,
-                        "gain",
-                        0.0
-                )
-        );
-        return prototypeStore;
+        return new PrototypeStore()
+                .addPrototype(
+                        PrototypeFactory.makeSelectionPrototype(
+                                STRING,
+                                "type",
+                                ImmutableSet.of(
+                                        "item",
+                                        "itemproto",
+                                        "character"
+                                )
+                        )
+                );
     }
 }

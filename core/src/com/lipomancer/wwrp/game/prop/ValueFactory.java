@@ -1,5 +1,6 @@
 package com.lipomancer.wwrp.game.prop;
 
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -23,12 +24,35 @@ class ValueFactory {
         );
     }
 
+    static PropertyValue makeStringList(Object value) {
+        return make(
+                value,
+                List.class,
+                StringListValue::new
+        );
+    }
+
     private static <T> PropertyValue make(Object value, Class<T> valueClass, Function<T, PropertyValue> construction) {
-        if (!value.getClass().equals(valueClass)) {
+        if (!(value instanceof List)) {
             throw new IllegalArgumentException(String.format("Values of type %s expected", valueClass.getName()));
         }
 
         return construction.apply(valueClass.cast(value));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> PropertyValue makeList(Object value, Class<T> valueClass, Function<List<T>, PropertyValue> construction) {
+        if (!value.getClass().equals(List.class)) {
+            throw new IllegalArgumentException("List expected.");
+        }
+
+        for (Object item : (List) value) {
+            if (!item.getClass().equals(valueClass)) {
+                throw new IllegalArgumentException(String.format("Values of type %s expected", valueClass.getName()));
+            }
+        }
+
+        return construction.apply((List<T>) value);
     }
 
     /**
@@ -44,6 +68,12 @@ class ValueFactory {
 
         @Override
         public String asString() {
+            throwIllegalState();
+            return null;
+        }
+
+        @Override
+        public List<String> asStringList() {
             throwIllegalState();
             return null;
         }
@@ -88,6 +118,23 @@ class ValueFactory {
 
         @Override
         public String asString() {
+            return value;
+        }
+    }
+
+    /**
+     * String values
+     */
+    private static class StringListValue extends BaseValue {
+
+        private List<String> value;
+
+        StringListValue(List<String> value) {
+            this.value = value;
+        }
+
+        @Override
+        public List<String> asStringList() {
             return value;
         }
     }

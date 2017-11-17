@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * Prototype for properties.
  */
-interface Prototype {
+public interface Prototype {
 
     /**
      * @return The name of the property.

@@ -18,4 +18,10 @@ public interface PropertyValue {
      * @throws IllegalStateException if the value is not a string.
      */
     String asString();
+
+    /**
+     * @return gets the property as a string list.
+     * @throws IllegalArgumentException if the value is not a string list.
+     */
+    List<String> asStringList();
 }

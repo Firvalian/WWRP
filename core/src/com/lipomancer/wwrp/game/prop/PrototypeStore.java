@@ -11,6 +11,15 @@ import java.util.Map;
  */
 public class PrototypeStore {
 
+    private static final PrototypeStore INSTANCE = new PrototypeStore();
+
+    /**
+     * @return a singleton instance for the prototype store.
+     */
+    public static PrototypeStore getInstance() {
+        return INSTANCE;
+    }
+
     private final Map<String, Prototype> prototypes;
 
     public PrototypeStore() {
@@ -22,14 +31,16 @@ public class PrototypeStore {
      *
      * @param prototype The prototype to register.
      * @throws IllegalArgumentException if a prototype with the same name is already registered.
+     * @return this
      */
-    public void addPrototype(Prototype prototype) {
+    public PrototypeStore addPrototype(Prototype prototype) {
         Preconditions.checkArgument(
                 !prototypes.containsKey(prototype.getName()),
                 "Prototype with name %s already exists",
                 prototype.getName()
         );
         prototypes.put(prototype.getName(), prototype);
+        return this;
     }
 
     /**

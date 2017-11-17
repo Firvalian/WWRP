@@ -1,5 +1,6 @@
 package com.lipomancer.wwrp.game.prop;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ class PropertyTest {
     private Prototype stringProto;
     private Prototype numericProto;
     private Prototype selectProto;
+    private Prototype stringListProto;
 
     @Test
     public void testPropertyCreation() {
@@ -50,10 +52,19 @@ class PropertyTest {
         selectProto.make("a");
     }
 
+    @Test
+    public void testListProperty() {
+        assertEquals(
+                stringListProto.make(ImmutableList.of("a", "b")).getValue().asStringList(),
+                ImmutableList.of("a", "b")
+        );
+    }
+
     @BeforeEach
     void setUp() {
         stringProto = PrototypeFactory.makePrototype(PropertyType.STRING, "str");
         numericProto = PrototypeFactory.makePrototype(PropertyType.NUMERIC, "num");
         selectProto = PrototypeFactory.makeSelectionPrototype(PropertyType.STRING, "select", ImmutableSet.of("a", "b"));
+        stringListProto = PrototypeFactory.makePrototype(PropertyType.STRING_LIST, "stringlist");
     }
 }

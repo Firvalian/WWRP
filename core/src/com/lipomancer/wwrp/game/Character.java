@@ -6,7 +6,7 @@ import com.lipomancer.wwrp.util.StepVector;
 /**
  * A playable or a non-playable character
  */
-public interface Character {
+public interface Character extends Entity {
 
     /**
      * @return The location of the given character in its zone.

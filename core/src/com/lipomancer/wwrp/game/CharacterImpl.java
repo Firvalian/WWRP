@@ -5,7 +5,7 @@ import com.lipomancer.wwrp.util.StepVector;
 /**
  * The {@link Character} implementation.
  */
-public class CharacterImpl implements Character {
+public class CharacterImpl extends BaseEntity implements Character {
 
     private final Location location;
 
