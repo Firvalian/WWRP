@@ -54,7 +54,8 @@ public class TestData {
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 0,
-                                                    "loc.y", 0
+                                                    "loc.y", 0,
+                                                    "loc.elevation", 0
                                             ),
                                             ImmutableList.of(player)
                                     ),
@@ -62,21 +63,24 @@ public class TestData {
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 0,
-                                                    "loc.y", 1
+                                                    "loc.y", 1,
+                                                    "loc.elevation", 0
                                             )
                                     ),
                                     ef.listEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 1,
-                                                    "loc.y", 0
+                                                    "loc.y", 0,
+                                                    "loc.elevation", 0
                                             )
                                     ),
                                     ef.listEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 1,
-                                                    "loc.y", 1
+                                                    "loc.y", 1,
+                                                    "loc.elevation", 0
                                             )
                                     )
                             )

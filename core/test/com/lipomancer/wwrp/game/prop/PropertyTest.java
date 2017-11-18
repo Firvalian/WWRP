@@ -16,7 +16,7 @@ class PropertyTest {
     private Prototype stringListProto;
 
     @Test
-    public void testPropertyCreation() {
+    void testPropertyCreation() {
         Property property = stringProto.make("value");
 
         assertEquals("value", property.getValue().asString());
@@ -25,7 +25,7 @@ class PropertyTest {
     }
 
     @Test
-    public void testPropertyCreationTypeMismatchString() {
+    void testPropertyCreationTypeMismatchString() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> stringProto.make(3.0)
@@ -33,7 +33,7 @@ class PropertyTest {
     }
 
     @Test
-    public void testPropertyCreationTypeMismatchNumeric() {
+    void testPropertyCreationTypeMismatchNumeric() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> numericProto.make("test")
@@ -41,7 +41,7 @@ class PropertyTest {
     }
 
     @Test
-    public void testSelectMismatch() {
+    void testSelectMismatch() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> selectProto.make("c")
@@ -49,12 +49,12 @@ class PropertyTest {
     }
 
     @Test
-    public void testSelectConstructionSuccess() {
+    void testSelectConstructionSuccess() {
         selectProto.make("a");
     }
 
     @Test
-    public void testListProperty() {
+    void testListProperty() {
         assertEquals(
                 stringListProto.make(ImmutableList.of("a", "b")).getValue().asStringList(),
                 ImmutableList.of("a", "b")
@@ -62,7 +62,7 @@ class PropertyTest {
     }
 
     @Test
-    public void testBoolProperty() {
+    void testBoolProperty() {
         assertFalse(
                 booleanProto.make(false).getValue().asBoolean()
         );
@@ -74,6 +74,6 @@ class PropertyTest {
         numericProto = PrototypeFactory.makePrototype(PropertyType.NUMERIC, "num");
         booleanProto = PrototypeFactory.makePrototype(PropertyType.BOOLEAN, "bool");
         selectProto = PrototypeFactory.makeSelectionPrototype(PropertyType.STRING, "select", ImmutableSet.of("a", "b"));
-        stringListProto = PrototypeFactory.makePrototype(PropertyType.STRING_LIST, "stringlist");
+        stringListProto = PrototypeFactory.makePrototype(PropertyType.STRING_LIST, "string_list");
     }
 }
