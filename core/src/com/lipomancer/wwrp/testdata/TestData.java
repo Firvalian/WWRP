@@ -1,6 +1,5 @@
 package com.lipomancer.wwrp.testdata;
 
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -8,7 +7,6 @@ import com.lipomancer.wwrp.game.*;
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static com.lipomancer.wwrp.game.prop.PropertyType.*;
 import static com.lipomancer.wwrp.game.prop.PrototypeFactory.makeDefaultPrototype;
@@ -50,7 +48,7 @@ public class TestData {
                             ),
                             locIndices,
                             ImmutableList.of(
-                                    ef.listEntity(
+                                    ef.setEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 0,
@@ -59,7 +57,7 @@ public class TestData {
                                             ),
                                             ImmutableList.of(player)
                                     ),
-                                    ef.listEntity(
+                                    ef.setEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 0,
@@ -67,7 +65,7 @@ public class TestData {
                                                     "loc.elevation", 0
                                             )
                                     ),
-                                    ef.listEntity(
+                                    ef.setEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 1,
@@ -75,7 +73,7 @@ public class TestData {
                                                     "loc.elevation", 0
                                             )
                                     ),
-                                    ef.listEntity(
+                                    ef.setEntity(
                                             ImmutableMap.of(
                                                     "type", "zonecell",
                                                     "loc.x", 1,
@@ -90,7 +88,7 @@ public class TestData {
     }
 
     private static Entity preparePlayer(EntityFactory ef) {
-        return ef.listEntity(
+        return ef.setEntity(
                 ImmutableMap.of(
                         "player", true
                 )

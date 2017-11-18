@@ -2,9 +2,7 @@ package com.lipomancer.wwrp.game;
 
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -15,7 +13,7 @@ public class IndexedEntity extends BaseEntity {
     private final List<String> indexKeys;
     private final Map<List<Object>, Entity> containedEntities;
 
-    public IndexedEntity(int id, PrototypeStore prototypeStore, Map<String, Object> properties, List<String> indexKeys, List<Entity> entities) {
+    IndexedEntity(int id, PrototypeStore prototypeStore, Map<String, Object> properties, List<String> indexKeys, List<Entity> entities) {
         super(id, prototypeStore, properties);
         this.indexKeys = indexKeys;
         this.containedEntities = new HashMap<>();
@@ -23,13 +21,18 @@ public class IndexedEntity extends BaseEntity {
     }
 
     @Override
-    public List<Entity> containedEntities() {
-        return containedEntities.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+    public Collection<Entity> containedEntities() {
+        return containedEntities.values();
     }
 
     @Override
-    public void addEntity(Entity entity) {
-        List<Object> key = indexKeys.stream().map(k -> entity.properties().get(k).getValue().asObj()).collect(Collectors.toList());
+    public boolean contains(Entity entity) {
+        return Optional.ofNullable(containedEntities.get(keysOf(entity))).map(entity::equals).orElse(false);
+    }
+
+    @Override
+    public boolean addEntity(Entity entity) {
+        List<Object> key = keysOf(entity);
         if (containedEntities.containsKey(key)) {
             throw new IllegalArgumentException("Sub-entity with the given keys exists: " + key.toString());
         }
@@ -39,10 +42,36 @@ public class IndexedEntity extends BaseEntity {
                 entity
         );
         entity.setParent(this);
+
+        return true;
     }
 
     @Override
     public Entity getContained(Map<String, Object> properties) {
         return containedEntities.get(indexKeys.stream().map(properties::get).collect(Collectors.toList()));
+    }
+
+    @Override
+    public boolean remove(Entity entity) {
+        boolean result = containedEntities.remove(
+                keysOf(entity),
+                entity
+        );
+
+        if (entity.parent().equals(this)) {
+            entity.setParent(NoEntity.INSTANCE);
+        }
+
+        return result;
+    }
+
+    /**
+     * Gets the keys to be used for the internal indexing, from the given entity.
+     *
+     * @param entity the entity to extract the keys from
+     * @return the list of index keys
+     */
+    private List<Object> keysOf(Entity entity) {
+        return indexKeys.stream().map(k -> entity.properties().get(k).getValue().asObj()).collect(Collectors.toList());
     }
 }

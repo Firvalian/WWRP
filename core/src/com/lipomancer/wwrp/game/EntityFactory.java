@@ -28,12 +28,12 @@ public class EntityFactory {
         return NoEntity.INSTANCE;
     }
 
-    public Entity listEntity(Map<String, Object> properties) {
-        return register(listEntity(properties, Collections.emptyList()));
+    public Entity setEntity(Map<String, Object> properties) {
+        return register(setEntity(properties, Collections.emptyList()));
     }
 
-    public Entity listEntity(Map<String, Object> properties, List<Entity> containedEntities) {
-        return register(new ListEntity(nextId(), prototypeStore, properties, containedEntities));
+    public Entity setEntity(Map<String, Object> properties, List<Entity> containedEntities) {
+        return register(new SetEntity(nextId(), prototypeStore, properties, containedEntities));
     }
 
     public Entity indexEntity(Map<String, Object> properties, List<String> indexKeys, List<Entity> entities) {

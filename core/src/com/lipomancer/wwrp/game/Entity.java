@@ -3,7 +3,7 @@ package com.lipomancer.wwrp.game;
 import com.lipomancer.wwrp.game.prop.Property;
 import com.lipomancer.wwrp.game.prop.PrototypeStore;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -23,7 +23,7 @@ public interface Entity {
     Entity parent();
 
     /**
-     * Sets the parent of this entity to the given entity.
+     * Sets the parent of this entity to the given entity. The operation removes this entity from its previous parent.
      *
      * @param newParent the new parent
      * @return the old parent
@@ -40,16 +40,23 @@ public interface Entity {
     /**
      * @return the entities contained by this entity.
      */
-    List<Entity> containedEntities();
+    Collection<Entity> containedEntities();
 
+    /**
+     * @param entity the entity to check
+     * @return whether if this entity contains the given entity.
+     */
+    boolean contains(Entity entity);
 
     /**
      * Adds the given entity to this entity. This operation is not guaranteed to succeed, since some of the entities
      * might prohibit addition of multiple entities with the same properties, as in {@link IndexedEntity}.
      *
+     * The operation sets the parent of the added entity to be this entity.
+     *
      * @param entity The entity to add.
      */
-    void addEntity(Entity entity);
+    boolean addEntity(Entity entity);
 
     /**
      * @return The properties of this entity.
@@ -81,4 +88,24 @@ public interface Entity {
      * @throws UnsupportedOperationException if the operation is not implemented.
      */
     Entity getContained(Map<String, Object> properties);
+
+    /**
+     * Removes the given entity from the contained entities of this entity. Doesn't mutate the entity if the given entity
+     * is not present.
+     *
+     * The given entity's parent will be set as {@link NoEntity} if it is currently set as this entity.
+     *
+     * @return whether if the entity was removed.
+     */
+    boolean remove(Entity entity);
+
+    /**
+     * Checks if this entity is the same entity with the given entity. Two entities are equal only if they are intensionally
+     * equal.
+     *
+     * @param o the other object to check
+     * @return whether if this entity is the same with the other entity.
+     */
+    @Override
+    boolean equals(Object o);
 }

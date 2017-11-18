@@ -41,8 +41,20 @@ abstract class BaseEntity implements Entity {
 
     @Override
     public Entity setParent(Entity newParent) {
+        if (newParent.equals(parent)) {
+            return parent;
+        }
+
         Entity oldParent = parent;
+        if (oldParent.contains(this)) {
+            oldParent.remove(this);
+        }
+
         parent = newParent;
+        if (!newParent.contains(this)) {
+            newParent.addEntity(this);
+        }
+
         return oldParent;
     }
 

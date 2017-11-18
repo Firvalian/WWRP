@@ -16,7 +16,7 @@ class EntityTest {
 
     @Test
     void basicConstruction() {
-        entityFactory.listEntity(
+        entityFactory.setEntity(
                 ImmutableMap.of(
                         "numeric", 3
                 )
@@ -26,8 +26,8 @@ class EntityTest {
     @Test
     void uniqueId() {
         assertNotEquals(
-                entityFactory.listEntity(ImmutableMap.of("numeric", 3)).id(),
-                entityFactory.listEntity(ImmutableMap.of("numeric", 3)).id()
+                entityFactory.setEntity(ImmutableMap.of("numeric", 3)).id(),
+                entityFactory.setEntity(ImmutableMap.of("numeric", 3)).id()
         );
     }
 
@@ -35,13 +35,13 @@ class EntityTest {
     void uniqueIdWithNone() {
         assertNotEquals(
                 NoEntity.INSTANCE.id(),
-                entityFactory.listEntity(ImmutableMap.of("numeric", 3)).id()
+                entityFactory.setEntity(ImmutableMap.of("numeric", 3)).id()
         );
     }
 
     @Test
     void fromId() {
-        Entity entity = entityFactory.listEntity(ImmutableMap.of("numeric", 3));
+        Entity entity = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
         assertSame(
                 entity,
                 entityFactory.fromId(entity.id()).orElse(NoEntity.INSTANCE)
@@ -54,7 +54,7 @@ class EntityTest {
                 ImmutableMap.of(),
                 ImmutableList.of("string"),
                 ImmutableList.of(
-                        entityFactory.listEntity(
+                        entityFactory.setEntity(
                                 ImmutableMap.of(
                                         "string", "hey"
                                 )
@@ -64,7 +64,7 @@ class EntityTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> entity.addEntity(
-                        entityFactory.listEntity(
+                        entityFactory.setEntity(
                                 ImmutableMap.of(
                                         "string", "hey"
                                 )
@@ -79,7 +79,7 @@ class EntityTest {
                 ImmutableMap.of(),
                 ImmutableList.of("string", "numeric"),
                 ImmutableList.of(
-                        entityFactory.listEntity(
+                        entityFactory.setEntity(
                                 ImmutableMap.of(
                                         "string", "hey",
                                         "numeric", 1
@@ -88,7 +88,7 @@ class EntityTest {
                 )
         );
         entity.addEntity(
-                entityFactory.listEntity(
+                entityFactory.setEntity(
                         ImmutableMap.of(
                                 "string", "hey",
                                 "numeric", 2
@@ -103,7 +103,7 @@ class EntityTest {
                 ImmutableMap.of(),
                 ImmutableList.of("string", "numeric"),
                 ImmutableList.of(
-                        entityFactory.listEntity(
+                        entityFactory.setEntity(
                                 ImmutableMap.of(
                                         "string", "hey",
                                         "numeric", 1,
@@ -115,7 +115,7 @@ class EntityTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> entity.addEntity(
-                        entityFactory.listEntity(
+                        entityFactory.setEntity(
                                 ImmutableMap.of(
                                         "string", "hey",
                                         "numeric", 1,
@@ -127,14 +127,94 @@ class EntityTest {
     }
 
     @Test
+    void parentSetNoop() {
+        Entity entity = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
+        Entity parent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3),
+                ImmutableList.of(entity)
+        );
+        entity.setParent(parent);
+        assertSame(parent, entity.parent());
+        assertTrue(parent.contains(entity));
+    }
+
+    @Test
     void parentSetOnInclusion() {
-        Entity entity = entityFactory.listEntity(ImmutableMap.of("numeric", 3));
+        Entity entity = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
         assertSame(entity.parent(), NoEntity.INSTANCE);
-        Entity parent = entityFactory.listEntity(
+        Entity parent = entityFactory.setEntity(
                 ImmutableMap.of("numeric", 3),
                 ImmutableList.of(entity)
         );
         assertSame(parent, entity.parent());
+    }
+
+    @Test
+    void inclusionOnParentSet() {
+        Entity entity = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
+        assertSame(entity.parent(), NoEntity.INSTANCE);
+        Entity parent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3)
+        );
+        entity.setParent(parent);
+        assertSame(parent, entity.parent());
+        assertTrue(parent.contains(entity));
+    }
+
+    @Test
+    void parentUnsetOnRemoval() {
+        Entity child = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
+        Entity parent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3),
+                ImmutableList.of(child)
+        );
+        parent.remove(child);
+        assertSame(NoEntity.INSTANCE, child.parent());
+        assertFalse(parent.contains(child));
+    }
+
+    @Test
+    void removalOnParentUnset() {
+        Entity child = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
+        Entity parent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3),
+                ImmutableList.of(child)
+        );
+        child.setParent(NoEntity.INSTANCE);
+        assertSame(NoEntity.INSTANCE, child.parent());
+        assertFalse(parent.contains(child));
+    }
+
+    @Test
+    void switchParentAddition() {
+        Entity child = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
+        Entity oldParent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3),
+                ImmutableList.of(child)
+        );
+        Entity newParent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3)
+        );
+        newParent.addEntity(child);
+        assertSame(newParent, child.parent());
+        assertFalse(oldParent.contains(child));
+        assertTrue(newParent.contains(child));
+    }
+
+    @Test
+    void switchParentSet() {
+        Entity child = entityFactory.setEntity(ImmutableMap.of("numeric", 3));
+        Entity oldParent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3),
+                ImmutableList.of(child)
+        );
+        Entity newParent = entityFactory.setEntity(
+                ImmutableMap.of("numeric", 3)
+        );
+        child.setParent(newParent);
+        assertSame(newParent, child.parent());
+        assertFalse(oldParent.contains(child));
+        assertTrue(newParent.contains(child));
     }
 
     @BeforeEach

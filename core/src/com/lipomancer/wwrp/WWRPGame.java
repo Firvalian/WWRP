@@ -22,10 +22,10 @@ public class WWRPGame extends ApplicationAdapter {
 		shapeRenderer = new ShapeRenderer();
 		gameState = TestData.prepareGameState();
 		moveParams = ImmutableMap.of(
-                Input.Keys.UP, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", 0, "dy", 1)),
-                Input.Keys.DOWN, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", 0, "dy", -1)),
-                Input.Keys.LEFT, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", -1, "dy", 0)),
-                Input.Keys.RIGHT, gameState.getEntityFactory().listEntity(ImmutableMap.of("dx", 1, "dy", 0))
+                Input.Keys.UP, gameState.getEntityFactory().setEntity(ImmutableMap.of("dx", 0, "dy", 1)),
+                Input.Keys.DOWN, gameState.getEntityFactory().setEntity(ImmutableMap.of("dx", 0, "dy", -1)),
+                Input.Keys.LEFT, gameState.getEntityFactory().setEntity(ImmutableMap.of("dx", -1, "dy", 0)),
+                Input.Keys.RIGHT, gameState.getEntityFactory().setEntity(ImmutableMap.of("dx", 1, "dy", 0))
         );
 	}
 
