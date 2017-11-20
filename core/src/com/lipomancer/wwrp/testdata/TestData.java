@@ -20,15 +20,14 @@ public class TestData {
 
     public static GameState prepareGameState() {
         EntityFactory entityFactory = new EntityFactory(preparePrototypeStore());
-        Entity player = preparePlayer(entityFactory);
         return new GameState(
                 entityFactory,
-                prepareWorld(entityFactory, player),
-                player
+                prepareWorld(entityFactory),
+                preparePlayer(entityFactory)
         );
     }
 
-    private static Entity prepareWorld(EntityFactory ef, Entity player) {
+    private static Entity prepareWorld(EntityFactory ef) {
         List<String> locIndices = ImmutableList.of("loc.x", "loc.y");
         return ef.indexEntity(
                 ImmutableMap.of(
@@ -54,8 +53,7 @@ public class TestData {
                                                     "loc.x", 0,
                                                     "loc.y", 0,
                                                     "loc.elevation", 0
-                                            ),
-                                            ImmutableList.of(player)
+                                            )
                                     ),
                                     ef.setEntity(
                                             ImmutableMap.of(

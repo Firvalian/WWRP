@@ -29,7 +29,7 @@ public class EntityFactory {
     }
 
     public Entity setEntity(Map<String, Object> properties) {
-        return register(setEntity(properties, Collections.emptyList()));
+        return setEntity(properties, Collections.emptyList());
     }
 
     public Entity setEntity(Map<String, Object> properties, List<Entity> containedEntities) {
@@ -50,11 +50,18 @@ public class EntityFactory {
         return Optional.ofNullable(entities.get(id));
     }
 
+    public PrototypeStore getPrototypeStore() {
+        return prototypeStore;
+    }
+
     private int nextId() {
         return counter.get();
     }
 
     private Entity register(Entity entity) {
+        if (entities.containsKey(entity.id())) {
+            throw new IllegalArgumentException("An entity with the provided entity's ID is present.");
+        }
         entities.put(entity.id(), entity);
         return entity;
     }
